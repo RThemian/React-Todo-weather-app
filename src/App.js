@@ -1,10 +1,15 @@
 import React from "react";
+
 import "./App.css";
-import { Button, Card, Form } from 'react-bootstrap';
+import { Button, Card, Form, Modal } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function Todo({ todo, index, markTodo, removeTodo }) {
+
+//span element passes through text some attribute
+
+
+function Todo({ todo, text, index, markTodo, removeTodo, editTodo }) {
   return (
     <div
       className="todo"
@@ -13,7 +18,9 @@ function Todo({ todo, index, markTodo, removeTodo }) {
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
       <div>
         <Button variant="outline-success" onClick={() => markTodo(index)}>✓</Button>{' '}
+        <Button variant ='outline-warning' onClick={() => editTodo(text)}>✍️</Button>{' '}
         <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>
+        
       </div>
     </div>
   );
@@ -43,9 +50,30 @@ function FormTodo({ addTodo }) {
 }
 
 function App() {
+
+  const [temp, setTemp] = React.useState('');
+  const [location, setLocation] = React.useState('london');
+
+ React.useEffect(() => {
+
+  fetch(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location}&aqi=no`)
+     .then(response => response.json())
+     .then(data => {
+       console.log(data)
+       console.log(data.current.temp_f)
+       setTemp(data.current.temp_f)
+       setLocation(data.location.name)
+     })
+     .catch(error => console.log(error))
+
+   }, [])
+
+
+
+
   const [todos, setTodos] = React.useState([
     {
-      text: "This is a sampe todo",
+      text: "Where do you want to go?",
       isDone: false
     }
   ]);
@@ -67,10 +95,42 @@ function App() {
     setTodos(newTodos);
   };
 
+  const editTodo = index => {
+    const newTodos = [...todos];
+    setOpen(true);
+
+  }
+
+  const [open, setOpen] = React.useState(false);
+  console.log(todos[0].text)
+ const modalBody = "checking"
+
   return (
+
+    <>
+    <Modal
+      show = {open}
+      onOpen = {e => setOpen(true)}
+      onClose = {e => setOpen(false)}
+      className="text-center mb-4"
+    >
+      <Modal.Title  >Edit Todo</Modal.Title>
+      <Modal.Body>
+       {modalBody}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick = {e => setOpen(false)} >Close Modal</Button>
+      </Modal.Footer>
+
+    </Modal>
+    {/* <div>
+      <h1>I'm a modal</h1>
+      <button onClick = {e => setOpen(false)}></button>
+    </div> */}
+
     <div className="app">
       <div className="container">
-        <h1 className="text-center mb-4">Todo List</h1>
+        <h1 className="text-center mb-4">Travel Todo List</h1>
         <FormTodo addTodo={addTodo} />
         <div>
           {todos.map((todo, index) => (
@@ -82,6 +142,7 @@ function App() {
                 todo={todo}
                 markTodo={markTodo}
                 removeTodo={removeTodo}
+                editTodo ={editTodo}
                 />
               </Card.Body>
             </Card>
@@ -89,6 +150,7 @@ function App() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
