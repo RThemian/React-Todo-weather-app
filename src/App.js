@@ -87,42 +87,35 @@ function App() {
     const newTodos = [...todos];
     newTodos[index].isDone = true;
     setTodos(newTodos);
+    console.log("🐸🐸🐸", index);
   };
 
   const removeTodo = index => {
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
+    console.log("🐸", index);
   };
-
+  const [modalIndex, setModalIndex] = React.useState(0);
   const editTodo = index => {
-    const newTodos = [...todos];
+    console.log("🐸🐸", index);
     setOpen(true);
 
+    const newTodos = [...todos];
+    //I give up for today, here I can't figure out how to edit on my own, so i'll copy and paste
+    setTodos(newTodos)
+    //setModalIndex(index);
+   
+    
   }
 
   const [open, setOpen] = React.useState(false);
   console.log(todos[0].text)
- const modalBody = "checking"
 
   return (
 
     <>
-    <Modal
-      show = {open}
-      onOpen = {e => setOpen(true)}
-      onClose = {e => setOpen(false)}
-      className="text-center mb-4"
-    >
-      <Modal.Title  >Edit Todo</Modal.Title>
-      <Modal.Body>
-       {modalBody}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick = {e => setOpen(false)} >Close Modal</Button>
-      </Modal.Footer>
-
-    </Modal>
+ 
     {/* <div>
       <h1>I'm a modal</h1>
       <button onClick = {e => setOpen(false)}></button>
@@ -148,6 +141,21 @@ function App() {
             </Card>
           ))}
         </div>
+        <Modal
+      show = {open}
+      onOpen = {e => setOpen(true)}
+      onClose = {e => setOpen(false)}
+      className="text-center mb-4"
+    >
+      <Modal.Title  >Edit Todo</Modal.Title>
+      <Modal.Body>
+       {todos[modalIndex].text.toString()}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick = {e => setOpen(false)} >Close Modal</Button>
+      </Modal.Footer>
+
+    </Modal>
       </div>
     </div>
     </>
