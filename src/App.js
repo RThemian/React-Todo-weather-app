@@ -18,7 +18,7 @@ function Todo({ todo, text, index, markTodo, removeTodo, editTodo }) {
       <span style={{ textDecoration: todo.isDone ? "line-through" : "" }}>{todo.text}</span>
       <div>
         <Button variant="outline-success" onClick={() => markTodo(index)}>✓</Button>{' '}
-        <Button variant ='outline-warning' onClick={() => editTodo(text)}>✍️</Button>{' '}
+        <Button variant ='outline-warning' onClick={() => editTodo(index)}>✍️</Button>{' '}
         <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>
         
       </div>
@@ -85,7 +85,7 @@ function App() {
 
   const markTodo = index => {
     const newTodos = [...todos];
-    newTodos[index].isDone = true;
+    newTodos[index].isDone = !newTodos[index].isDone; 
     setTodos(newTodos);
     console.log("🐸🐸🐸", index);
   };
@@ -97,15 +97,18 @@ function App() {
     console.log("🐸", index);
   };
   const [modalIndex, setModalIndex] = React.useState(0);
+  const [edit, setEdit] = React.useState('')
+
   const editTodo = index => {
     console.log("🐸🐸", index);
+    setModalIndex(index);
     setOpen(true);
 
     const newTodos = [...todos];
+    //newTodos.splice(index, 1);
     //I give up for today, here I can't figure out how to edit on my own, so i'll copy and paste
     setTodos(newTodos)
-    //setModalIndex(index);
-   
+    
     
   }
 
@@ -141,18 +144,29 @@ function App() {
             </Card>
           ))}
         </div>
+        
         <Modal
       show = {open}
       onOpen = {e => setOpen(true)}
       onClose = {e => setOpen(false)}
       className="text-center mb-4"
-    >
+    > 
       <Modal.Title  >Edit Todo</Modal.Title>
       <Modal.Body>
-       {todos[modalIndex].text.toString()}
+      
+    <Form onSubmit={editTodo}> 
+    <Form.Group>
+      <Form.Label><b>change your todo</b></Form.Label>
+      <Form.Control type="text" className="input" value={edit} onChange={e => setEdit(e.target.value)} placeholder={todos[modalIndex].text.toString()} />
+    </Form.Group>
+  </Form>
+    
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick = {e => setOpen(false)} >Close Modal</Button>
+        <Button variant = 'warning' onClick = {e => setOpen(false)} >Cancel</Button>
+        <Button 
+        onClick = {e => addTodo(edit) }>Close and Save Todo</Button>
+        
       </Modal.Footer>
 
     </Modal>
