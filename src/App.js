@@ -85,7 +85,7 @@ function App() {
 
   const markTodo = index => {
     const newTodos = [...todos];
-    newTodos[index].isDone = !newTodos[index].isDone; 
+    newTodos[index].isDone = true;
     setTodos(newTodos);
     console.log("🐸🐸🐸", index);
   };
@@ -98,7 +98,6 @@ function App() {
   };
   const [modalIndex, setModalIndex] = React.useState(0);
   const [edit, setEdit] = React.useState('')
-
   const editTodo = index => {
     console.log("🐸🐸", index);
     setModalIndex(index);
@@ -113,7 +112,7 @@ function App() {
   }
 
   const [open, setOpen] = React.useState(false);
-  console.log(todos[0].text)
+  console.log('🍎', modalIndex); 
 
   return (
 
@@ -149,11 +148,11 @@ function App() {
       show = {open}
       onOpen = {e => setOpen(true)}
       onClose = {e => setOpen(false)}
-      className="text-center mb-4"
+      className="text-centermb-4"
     > 
       <Modal.Title  >Edit Todo</Modal.Title>
       <Modal.Body>
-      
+      {todos[modalIndex].text.toString()}
     <Form onSubmit={editTodo}> 
     <Form.Group>
       <Form.Label><b>change your todo</b></Form.Label>
@@ -164,8 +163,7 @@ function App() {
       </Modal.Body>
       <Modal.Footer>
         <Button variant = 'warning' onClick = {e => setOpen(false)} >Cancel</Button>
-        <Button 
-        onClick = {e => addTodo(edit) }>Close and Save Todo</Button>
+        <Button variant = 'success' onClick = {e => {addTodo(edit)} }>Save and Close Todo</Button>
         
       </Modal.Footer>
 
