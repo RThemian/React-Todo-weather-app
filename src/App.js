@@ -10,6 +10,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Todo({ todo, text, index, markTodo, removeTodo, editTodo }) {
+  function getLocation() {
+    return;
+  }
+
   return (
     <div
       className="todo"
@@ -19,7 +23,9 @@ function Todo({ todo, text, index, markTodo, removeTodo, editTodo }) {
       <div>
         <Button variant="outline-success" onClick={() => markTodo(index)}>✓</Button>{' '}
         <Button variant ='outline-warning' onClick={() => editTodo(index)}>✍️</Button>{' '}
-        <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>
+        <Button variant="outline-danger" onClick={() => removeTodo(index)}>✕</Button>{' '}
+        <Button variant = "outline-info" onClick ={getLocation}>⛈</Button>
+
         
       </div>
     </div>
@@ -29,18 +35,31 @@ function Todo({ todo, text, index, markTodo, removeTodo, editTodo }) {
 function FormTodo({ addTodo }) {
   const [value, setValue] = React.useState("");
 
+  
+
   const handleSubmit = e => {
     e.preventDefault();
     if (!value) return;
     addTodo(value);
+   
     setValue("");
   };
+
+
 
   return (
     <Form onSubmit={handleSubmit}> 
     <Form.Group>
       <Form.Label><b>Add Todo</b></Form.Label>
-      <Form.Control type="text" className="input" value={value} onChange={e => setValue(e.target.value)} placeholder="Add new todo" />
+
+      <Form.Control 
+        type="text" 
+        className="input" 
+        value={value} 
+        onChange={e => setValue(e.target.value)} 
+        placeholder="Add new todo" 
+      />
+
     </Form.Group>
     <Button variant="primary mb-3" type="submit">
       Submit
@@ -53,6 +72,10 @@ function App() {
 
   const [temp, setTemp] = React.useState('');
   const [location, setLocation] = React.useState('london');
+
+  const getLocation = (text) => {
+    setLocation(text);
+  }
 
  React.useEffect(() => {
 
@@ -85,7 +108,7 @@ function App() {
 
   const markTodo = index => {
     const newTodos = [...todos];
-    newTodos[index].isDone = true;
+    newTodos[index].isDone = !newTodos[index].isDone;
     setTodos(newTodos);
     console.log("🐸🐸🐸", index);
   };
@@ -111,8 +134,13 @@ function App() {
     
   }
 
+
+
+
   const [open, setOpen] = React.useState(false);
   console.log('🍎', modalIndex); 
+
+  
 
   return (
 
@@ -123,8 +151,10 @@ function App() {
       <button onClick = {e => setOpen(false)}></button>
     </div> */}
 
-    <div className="app">
-      <div className="container">
+      <div className = "app">
+  
+      <div className = "container">
+     
         <h1 className="text-center mb-4">Travel Todo List</h1>
         <FormTodo addTodo={addTodo} />
         <div>
@@ -138,6 +168,7 @@ function App() {
                 markTodo={markTodo}
                 removeTodo={removeTodo}
                 editTodo ={editTodo}
+                
                 />
               </Card.Body>
             </Card>
@@ -145,18 +176,18 @@ function App() {
         </div>
         
         <Modal
-      show = {open}
-      onOpen = {e => setOpen(true)}
-      onClose = {e => setOpen(false)}
-      className="text-centermb-4"
-    > 
+         show = {open}
+         onOpen = {e => setOpen(true)}
+         onClose = {e => setOpen(false)}
+         className="text-center mb-4"
+        > 
       <Modal.Title  >Edit Todo</Modal.Title>
       <Modal.Body>
-      {todos[modalIndex].text.toString()}
-    <Form onSubmit={editTodo}> 
+      {todos[modalIndex].text.toString() ? todos[modalIndex].text.toString() : "What now?" }
+    <Form > 
     <Form.Group>
       <Form.Label><b>change your todo</b></Form.Label>
-      <Form.Control type="text" className="input" value={edit} onChange={e => setEdit(e.target.value)} placeholder={todos[modalIndex].text.toString()} />
+      <Form.Control  type="text" className="input" value={edit} onChange={e => setEdit(e.target.value)} placeholder={todos[modalIndex].text.toString() ? todos[modalIndex].text.toString() : "What now?" } />
     </Form.Group>
   </Form>
     
