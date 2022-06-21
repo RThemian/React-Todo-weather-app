@@ -33,6 +33,10 @@ export default function App() {
   
 
    //target the input using the event.key
+
+  const [weather, setWeather] = useState('');
+  const [weather2, setWeather2] = useState('');
+
   const searchLocation = (event) => {
     
       console.log(location);
@@ -44,14 +48,44 @@ export default function App() {
     setData(response.data)
     console.log("🌿🍵💚🌱", response.data)
     setTemp(response.data.current.temp_f)
+    
     })
     .catch((error) => console.error(error))
   }
 
+const weatherMatcher = () => {
+
+}
+ const weatherConditions = [
+     {
+       photo: "https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg",
+       text: "sunny"
+     },
+         {
+           photo: "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg",
+           text: "cloudy"
+         },
+         {
+           photo: "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg",
+           text: "partly cloudy"
+         },
+         {
+           photo: "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg",
+           text: "rainy"
+          },
+        ]
+
+      console.log(weatherConditions);
+
+    const [weatherImage2, setWeatherImage2] = useState("https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg")
+
+
+        
+
   const [location2, setLocation2] = useState('');
   const [temp2, setTemp2] = useState('');
 
-  const cityList2 = city2.map((item) => <h4>{item}</h4>);
+  const cityList2 = city2.map((item) => <li>{item}</li>);
 
 
   const searchLocation2 = (event) => {
@@ -60,8 +94,10 @@ export default function App() {
   axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location2}&aqi=yes`)
   .then((response2) => {
   setData(response2.data)
-  console.log("🌿🍵💚🌱", response2.data)
+   
   setTemp2(response2.data.current.temp_f)
+  console.log("💚", response2.data.current.condition.text);
+  setWeather2(response2.data.current.condition.text)
   setCity2([response2.data.location.name, response2.data.location.region, response2.data.location.country])
   })
   .catch((error2) => console.error(error2))
@@ -131,18 +167,31 @@ export default function App() {
 
 </Row>
 </div>
-
-<div className="row">
-  <div class = "col-lg-6">
+<div className = "container">
+<Row>
+  <Col>
     <h1 className="text-primary">{temp ? temp : "Find out the temperature of your first place to visit"}</h1>
-  </div>
-  <div class = "col-lg-6">
-    <h1 className="text-danger">{temp2 ? temp2 : "Find the temperature of the second city!"}</h1>
-    {cityList2}
-    <h3 className="text-danger">{city2 ? city2 : "Enter another city"}</h3>
-  </div>
-</div>
+  </Col>
+  <Col></Col>
+  <Row>
+  <Col>
+    <h1 className="text-danger">{temp2 ? `${temp2}º : "Find the temperature of the second city!"}</h1>
+    <h4 className="text-danger">{cityList2}</h4>
+    <Col>
+    <h2>{weather2 ? `Weather condition: ${weather2}` : `Weather condition`} </h2>
+    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherImage2} />
+    </Col>
 
+    
+   
+  </Col>
+  </Row>
+  <img className = "mb-4 mx-4 w-25 h-25" src ='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg' />
+  <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg" />
+  <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg" />
+  <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg" />
+</Row>
+</div>
 
 
 
