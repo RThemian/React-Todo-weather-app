@@ -74,6 +74,10 @@ const weatherMatcher = () => {
            text: "rainy"
           },
           {
+            photo: "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg",
+           text: "moderate rain"
+          },
+          {
             photo: "https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg",
             text: "open-road"
           }
