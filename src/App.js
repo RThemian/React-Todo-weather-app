@@ -73,6 +73,10 @@ const weatherMatcher = () => {
            photo: "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg",
            text: "rainy"
           },
+          {
+            photo: "https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg",
+            text: "open-road"
+          }
         ]
 
       console.log(weatherConditions);
@@ -87,6 +91,12 @@ const weatherMatcher = () => {
 
   const cityList2 = city2.map((item) => <li>{item}</li>);
 
+  const displayWeatherTypes = weatherConditions.map((pic) => {
+    <img className="mb-4 mx-4 w-25 h-25" src ={pic.photo} key = {pic.text} />
+  })
+
+  console.log(displayWeatherTypes);
+
 
   const searchLocation2 = (event) => {
     
@@ -96,11 +106,38 @@ const weatherMatcher = () => {
   setData(response2.data)
    
   setTemp2(response2.data.current.temp_f)
-  console.log("💚", response2.data.current.condition.text);
+  console.log(response2.data.current.condition.text);
   setWeather2(response2.data.current.condition.text)
   setCity2([response2.data.location.name, response2.data.location.region, response2.data.location.country])
   })
   .catch((error2) => console.error(error2))
+}
+//const [defaultWeatherReal, setDefaultWeatherReal] = useState('https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg');
+
+var weatherCheck = [];
+
+function weatherSelector(props) {
+    const weatherFormatted = props.toLowerCase();
+    let defaultWeather = "https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg";
+    const weatherText = weatherConditions.forEach(function(element) {
+      
+      console.log(element.text)
+      console.log(element.photo)
+      console.log(weatherFormatted === element.text)
+    if (weatherFormatted === element.text) {
+      let defaultWeather = element.photo;
+      weatherCheck.push(element.photo);
+      console.log("💚", defaultWeather);
+      console.log("💚💚", weatherCheck);
+        
+      }
+    });
+    console.log("💚💚💚", defaultWeather);
+  return(
+    weatherCheck
+  )
+
+
 }
 
 
@@ -175,14 +212,14 @@ const weatherMatcher = () => {
   <Col></Col>
   <Row>
   <Col>
-    <h1 className="text-danger">{temp2 ? `${temp2}º : "Find the temperature of the second city!"}</h1>
+    <h1 className="text-danger">{temp2 ? `${temp2}ºF` : "Find the temperature of the second city!"}</h1>
     <h4 className="text-danger">{cityList2}</h4>
     <Col>
     <h2>{weather2 ? `Weather condition: ${weather2}` : `Weather condition`} </h2>
-    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherImage2} />
+    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector(weather2)} />
     </Col>
 
-    
+    {displayWeatherTypes} 
    
   </Col>
   </Row>
@@ -190,6 +227,7 @@ const weatherMatcher = () => {
   <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg" />
   <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg" />
   <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg" />
+  
 </Row>
 </div>
 
