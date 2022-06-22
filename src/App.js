@@ -3,6 +3,7 @@ import {Form, Button, Card, Col, Row} from 'react-bootstrap';
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import thunderWeather from './assets/thunderWeather.jpg';
 
 
 export default function App() {
@@ -11,8 +12,8 @@ export default function App() {
   const [data, setData] = useState('');
   const [temp, setTemp] = useState('');
   const [location, setLocation] = useState("")
-  const [city1, setCity1] = useState('');
-  const [city2, setCity2] = useState(["city", "state", "country"]);
+  const [city1, setCity1] = useState(["city 1", "state 1", "country 1"]);
+  const [city2, setCity2] = useState(["city 2", "state 2", "country 2"]);
  // const url = `http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${cityInput}&aqi=yes`
 
 
@@ -38,7 +39,7 @@ export default function App() {
   const [weather2, setWeather2] = useState('');
 
   const searchLocation = (event) => {
-    
+      //event.preventDefault();
       console.log(location);
     
     //check is "enter" was hit on the keyboard
@@ -48,6 +49,8 @@ export default function App() {
     setData(response.data)
     console.log("🌿🍵💚🌱", response.data)
     setTemp(response.data.current.temp_f)
+    setWeather(response.data.current.condition.text)
+  setCity1([response.data.location.name, response.data.location.region, response.data.location.country])
     
     })
     .catch((error) => console.error(error))
@@ -66,6 +69,10 @@ const weatherMatcher = () => {
            text: "cloudy"
          },
          {
+          photo: "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg",
+          text: "overcast"
+        },
+         {
            photo: "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg",
            text: "partly cloudy"
          },
@@ -78,32 +85,41 @@ const weatherMatcher = () => {
            text: "moderate rain"
           },
           {
-            photo: "https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg",
-            text: "open-road"
+            photo: "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg",
+           text: "light moderate rain"
           }
-        ]
+        ];
 
       console.log(weatherConditions);
 
-    const [weatherImage2, setWeatherImage2] = useState("https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg")
+  
 
 
-        
+     //  <img className="mb-4 mx-4 w-25 h-25" src ={pic.photo} key = {pic.text} />   
 
   const [location2, setLocation2] = useState('');
   const [temp2, setTemp2] = useState('');
 
+  const cityList1 = city1.map((item) => <li>{item}</li>)
+
   const cityList2 = city2.map((item) => <li>{item}</li>);
+// global var to hold images in url only
+  // var weatherImageSources = [
+  //   {
 
-  const displayWeatherTypes = weatherConditions.map((pic) => {
-    <img className="mb-4 mx-4 w-25 h-25" src ={pic.photo} key = {pic.text} />
-  })
+  //   }
+  // ]
+// got to fix that displayWeatherTypes is not being filled permanently after end of mapping
+   const displayWeatherTypes = weatherConditions.map((pic) => {
+     console.log("🔴",pic)
+   
+   })
 
-  console.log(displayWeatherTypes);
+  console.log("🔴🔴🔴", displayWeatherTypes);
 
 
   const searchLocation2 = (event) => {
-    
+    //event.preventDefault();
     console.log(location2);
   axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location2}&aqi=yes`)
   .then((response2) => {
@@ -118,31 +134,54 @@ const weatherMatcher = () => {
 }
 //const [defaultWeatherReal, setDefaultWeatherReal] = useState('https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg');
 
+
+
+useEffect(() => {
+
+
+
+}, [weather, weather2])
+
+
+const [weatherImage1, setWeatherImage1] = useState("https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg");
+const [weatherImage2, setWeatherImage2] = useState("https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg");
+
+
+
+
 var weatherCheck = [];
 
 function weatherSelector(props) {
     const weatherFormatted = props.toLowerCase();
-    let defaultWeather = "https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg";
-    const weatherText = weatherConditions.forEach(function(element) {
+    let defaultWeather = "https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg";
+    weatherConditions.forEach(function(element) {
       
       console.log(element.text)
       console.log(element.photo)
       console.log(weatherFormatted === element.text)
     if (weatherFormatted === element.text) {
-      let defaultWeather = element.photo;
+      
       weatherCheck.push(element.photo);
       console.log("💚", defaultWeather);
+
       console.log("💚💚", weatherCheck);
         
       }
     });
-    console.log("💚💚💚", defaultWeather);
+    
+    console.log("💚💚💚", defaultWeather, weatherCheck);
+
+  if(weatherCheck.length !== 0) {
+    return weatherCheck
+  }
   return(
-    weatherCheck
+    defaultWeather
   )
 
+  }
 
-}
+ 
+
 
 
 
@@ -171,7 +210,7 @@ function weatherSelector(props) {
 
 <Col>
   <h1>Your weather preferences</h1>
-<Form onSubmit={searchLocation2}>
+<Form >
   <Form.Group className="mb-3 w-50" controlId="inputLocationWeather2">
     <Form.Label>What's your ideal temperature?</Form.Label>
     <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather" onKeyPress = {searchLocation2} />
@@ -188,7 +227,8 @@ function weatherSelector(props) {
 
 </Col>
 
-<Col>This is the 3rd column
+<Col>
+<h1 className = "text-info">What other city do you want to compare?</h1>
 <Form onSubmit={searchLocation2}>
   <Form.Group className="mb-3 w-50" controlId="inputLocationWeather2">
     <Form.Label>Check the weather for second city</Form.Label>
@@ -211,30 +251,36 @@ function weatherSelector(props) {
 <div className = "container">
 <Row>
   <Col>
-    <h1 className="text-primary">{temp ? temp : "Find out the temperature of your first place to visit"}</h1>
+    <h1 className="text-primary">{temp ? `${temp}ºF` : "Find out the temperature of your first place to visit"}</h1>
+    <h4 className="text-primary">{cityList1}</h4>
+    <Col>
+    <h2>{weather ? `Weather condition: ${weather}` : `Weather condition`} </h2>
+    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector(weather)} alt ="weather condition" />
+    </Col>
   </Col>
-  <Col></Col>
-  <Row>
+ 
+  
   <Col>
     <h1 className="text-danger">{temp2 ? `${temp2}ºF` : "Find the temperature of the second city!"}</h1>
     <h4 className="text-danger">{cityList2}</h4>
     <Col>
     <h2>{weather2 ? `Weather condition: ${weather2}` : `Weather condition`} </h2>
-    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector(weather2)} />
+    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector(weather2)} alt ="weather condition" />
     </Col>
 
-    {displayWeatherTypes} 
+    
    
   </Col>
-  </Row>
-  <img className = "mb-4 mx-4 w-25 h-25" src ='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg' />
+  <Row>{displayWeatherTypes}</Row>
+  
+  
+</Row>
+</div>
+<img className = "mb-4 mx-4 w-25 h-25" src ='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg' />
   <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg" />
   <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg" />
   <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg" />
   
-</Row>
-</div>
-
 
 
     </>
