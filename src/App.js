@@ -134,7 +134,15 @@ const weatherMatcher = () => {
 }
 //const [defaultWeatherReal, setDefaultWeatherReal] = useState('https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg');
 
+// store images
+//<img className = "mb-4 mx-4 w-25 h-25" src ='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg' />
+  //<img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg" />
+  //<img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg" />
+  //<img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg" />
+  
 
+  const [news1, setNews1] = useState([]);
+  const [news2, setNews2] = useState([]);
 
 useEffect(() => {
 
@@ -156,20 +164,16 @@ function weatherSelector(props) {
     let defaultWeather = "https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg";
     weatherConditions.forEach(function(element) {
       
-      console.log(element.text)
-      console.log(element.photo)
-      console.log(weatherFormatted === element.text)
+      
     if (weatherFormatted === element.text) {
       
       weatherCheck.push(element.photo);
-      console.log("💚", defaultWeather);
-
-      console.log("💚💚", weatherCheck);
+      
         
       }
     });
     
-    console.log("💚💚💚", defaultWeather, weatherCheck);
+    
 
   if(weatherCheck.length !== 0) {
     return weatherCheck
@@ -188,49 +192,46 @@ function weatherSelector(props) {
 
   return (
     <>
+    <div className = "bg-light">
     <div className="container mt-2">
-      <h1 className="text-white bg-dark w-75">Hello World!</h1>
+      <h1 className="text-white text-center bg-dark w-100">Which... Where?</h1>
       
     <Row>
+   
       <Col>
-    <Form  onSubmit={searchLocation}>
-  <Form.Group className="mb-3 w-50" controlId="inputLocationWeather">
-    <Form.Label>Check the weather</Form.Label>
-    <Form.Control value = {location} onChange = {e => setLocation(e.target.value)} type="text" placeholder="Enter location to check weather" onKeyPress = {searchLocation} />
-    <Form.Text className="text-muted">
-      Enter where you would like to visit
-    </Form.Text>
+      <div className="border border-dark rounded px-4 mb-2">
+      <h1 className = "text-danger">What's the first city you want to compare?</h1>
+      <Form onSubmit={searchLocation}>
+      <Form.Group className="mb-3 w-75" controlId="inputLocationWeather">
+      <Form.Label>Check the weather</Form.Label>
+      <Form.Control value = {location} onChange = {e => setLocation(e.target.value)} type="text" placeholder="Enter location to check weather" onKeyPress = {searchLocation} />
+      <Form.Text className="text-muted">
+       Enter where you would like to visit
+       </Form.Text>
   </Form.Group>
 
-  <Button variant="primary" type="submit" onClick = {searchLocation}>
+  <Button className ="mb-4 " variant="primary" type="submit" onClick = {searchLocation}>
     Submit
   </Button>
 </Form>
+</div>
 </Col>
 
-<Col>
-  <h1>Your weather preferences</h1>
-<Form >
-  <Form.Group className="mb-3 w-50" controlId="inputLocationWeather2">
-    <Form.Label>What's your ideal temperature?</Form.Label>
-    <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather" onKeyPress = {searchLocation2} />
-    <Form.Text className="text-muted">
-      Use the slider to position your ideal temperature range
-    </Form.Text>
-  </Form.Group>
 
-  <Button variant="primary" type="submit" onClick = {searchLocation2}>
-    Submit
-  </Button>
-</Form>
+<Col>
+  
+    <div className="bg-info px-4 block-example border border-success border-1 rounded mb-0">
+    <h1>Your weather preferences: What's your ideal temperature?</h1>
+    </div>
 
 
 </Col>
 
 <Col>
+<div className = "border border-dark rounded px-4 mb-2">
 <h1 className = "text-info">What other city do you want to compare?</h1>
 <Form onSubmit={searchLocation2}>
-  <Form.Group className="mb-3 w-50" controlId="inputLocationWeather2">
+  <Form.Group className="mb-3 w-75" controlId="inputLocationWeather2">
     <Form.Label>Check the weather for second city</Form.Label>
     <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather" onKeyPress = {searchLocation2} />
     <Form.Text className="text-muted">
@@ -238,15 +239,16 @@ function weatherSelector(props) {
     </Form.Text>
   </Form.Group>
 
-  <Button variant="primary" type="submit" onClick = {searchLocation2}>
+  <Button className = "mb-4" variant="primary" type="submit" onClick = {searchLocation2}>
     Submit
   </Button>
 </Form>
 
-
+</div>
 </Col>
 
 </Row>
+</div>
 </div>
 <div className = "container">
 <Row>
@@ -276,11 +278,7 @@ function weatherSelector(props) {
   
 </Row>
 </div>
-<img className = "mb-4 mx-4 w-25 h-25" src ='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg' />
-  <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg" />
-  <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg" />
-  <img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg" />
-  
+
 
 
     </>
