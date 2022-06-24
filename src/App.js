@@ -4,6 +4,7 @@ import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import thunderWeather from './assets/thunderWeather.jpg';
+import useFetch from "./components/useFetch.js";
 
 
 export default function App() {
@@ -11,27 +12,22 @@ export default function App() {
   const [value, setValue] = useState('');
   const [data, setData] = useState('');
   const [temp, setTemp] = useState('');
-  const [location, setLocation] = useState("")
+  const [location, setLocation] = useState("seattle")
   const [city1, setCity1] = useState(["city 1", "state 1", "country 1"]);
   const [city2, setCity2] = useState(["city 2", "state 2", "country 2"]);
- // const url = `http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${cityInput}&aqi=yes`
 
-
- 
-  // useEffect(() => {
-  // fetch(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location}&aqi=no`)
-  // .then(response => response.json())
-  // .then(data => {
-  // console.log(data)
-  // console.log(data.current.temp_f)
-  // setTemp(data.current.temp_f)
-
-  //  })
-  //    .catch(error => console.error(error))
-
-  //  }, [])
    
-  
+  const {get, loading} = useFetch("https://newsapi.org/v2/");
+  const newsAPI = "215039076dcd421ab4032504527bdae1";
+
+  //https://newsapi.org/v2/everything?q=chicago&apiKey=215039076dcd421ab4032504527bdae1
+
+    useEffect(() => {
+        get(`everything?q=${location}&apiKey=${newsAPI}`).then(data => {
+            console.log("🌿🍵💚🌱", data);
+        })
+        .catch(error => console.error(error));
+    }, []);
 
    //target the input using the event.key
 
@@ -39,7 +35,7 @@ export default function App() {
   const [weather2, setWeather2] = useState('');
 
   const searchLocation = (event) => {
-      //event.preventDefault();
+      
       console.log(location);
     
     //check is "enter" was hit on the keyboard
@@ -47,7 +43,7 @@ export default function App() {
     axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location}&aqi=yes`)
     .then((response) => {
     setData(response.data)
-    console.log("🌿🍵💚🌱", response.data)
+    console.log( response.data)
     setTemp(response.data.current.temp_f)
     setWeather(response.data.current.condition.text)
   setCity1([response.data.location.name, response.data.location.region, response.data.location.country])
@@ -56,9 +52,7 @@ export default function App() {
     .catch((error) => console.error(error))
   }
 
-const weatherMatcher = () => {
 
-}
  const weatherConditions = [
      {
        photo: "https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg",
@@ -97,7 +91,7 @@ const weatherMatcher = () => {
 
      //  <img className="mb-4 mx-4 w-25 h-25" src ={pic.photo} key = {pic.text} />   
 
-  const [location2, setLocation2] = useState('');
+  const [location2, setLocation2] = useState('chicago');
   const [temp2, setTemp2] = useState('');
 
   const cityList1 = city1.map((item) => <li>{item}</li>)
@@ -119,7 +113,7 @@ const weatherMatcher = () => {
 
 
   const searchLocation2 = (event) => {
-    //event.preventDefault();
+    
     console.log(location2);
   axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location2}&aqi=yes`)
   .then((response2) => {
@@ -171,15 +165,42 @@ function weatherSelector(props) {
       
         
       }
-    });
     
+    
+    })
+    if(weatherCheck.length !== 0) {
+    
+      return weatherCheck
+    }
+    return(
+      defaultWeather
+    )
+    }
     
 
-  if(weatherCheck.length !== 0) {
-    return weatherCheck
+    var weatherCheck2 = [];
+
+    function weatherSelector2(props) {
+        const weatherFormatted2 = props.toLowerCase();
+        let defaultWeather2 = "https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg";
+        weatherConditions.forEach(function(element) {
+          
+          
+        if (weatherFormatted2 === element.text) {
+          
+          weatherCheck2.push(element.photo);
+          
+            
+          }
+        });
+      
+
+  if(weatherCheck2.length !== 0) {
+    
+    return weatherCheck2
   }
   return(
-    defaultWeather
+    defaultWeather2
   )
 
   }
@@ -194,7 +215,8 @@ function weatherSelector(props) {
     <>
     <div className = "bg-light">
     <div className="container mt-2">
-      <h1 className="text-white text-center bg-dark w-100">Which... Where?</h1>
+    <h2>{loading ? "Loading..." : ""}</h2>
+      <h1 className="text-white text-center bg-dark w-100">Which city, better weather?</h1>
       
     <Row>
    
@@ -220,8 +242,10 @@ function weatherSelector(props) {
 
 <Col>
   
-    <div className="bg-info px-4 block-example border border-success border-1 rounded mb-0">
-    <h1>Your weather preferences: What's your ideal temperature?</h1>
+    <div className="text-center bg-info px-4 block-example border border-success border-1 rounded mb-0">
+    <h1 className="mb-4">? </h1>
+      <img className = 'container mb-4' src = {thunderWeather}/>
+   
     </div>
 
 
@@ -252,7 +276,8 @@ function weatherSelector(props) {
 </div>
 <div className = "container">
 <Row>
-  <Col>
+  
+  <Col className = "border border-dark">
     <h1 className="text-primary">{temp ? `${temp}ºF` : "Find out the temperature of your first place to visit"}</h1>
     <h4 className="text-primary">{cityList1}</h4>
     <Col>
@@ -260,14 +285,15 @@ function weatherSelector(props) {
     <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector(weather)} alt ="weather condition" />
     </Col>
   </Col>
+
  
   
-  <Col>
+  <Col className = "border border-dark">
     <h1 className="text-danger">{temp2 ? `${temp2}ºF` : "Find the temperature of the second city!"}</h1>
     <h4 className="text-danger">{cityList2}</h4>
     <Col>
     <h2>{weather2 ? `Weather condition: ${weather2}` : `Weather condition`} </h2>
-    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector(weather2)} alt ="weather condition" />
+    <img className = "mb-4 mx-4 w-25 h-25" src = {weatherSelector2(weather2)} alt ="weather condition" />
     </Col>
 
     
@@ -284,4 +310,4 @@ function weatherSelector(props) {
     </>
   );
 
-};
+  };
