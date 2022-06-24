@@ -256,7 +256,7 @@ function weatherSelector(props) {
 <h1 className = "text-info">What other city do you want to compare?</h1>
 <Form onSubmit={searchLocation2}>
   <Form.Group className="mb-3 w-75" controlId="inputLocationWeather2">
-    <Form.Label>Check the weather for second city</Form.Label>
+    <Form.Label>Check the weather</Form.Label>
     <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather" onKeyPress = {searchLocation2} />
     <Form.Text className="text-muted">
       Enter where you would like to visit
@@ -275,9 +275,9 @@ function weatherSelector(props) {
 </div>
 </div>
 <div className = "container">
-<Row>
+<Row >
   
-  <Col className = "border border-dark">
+  <Col className = "border border-dark rounded px-4 mb-2">
     <h1 className="text-primary">{temp ? `${temp}ºF` : "Find out the temperature of your first place to visit"}</h1>
     <h4 className="text-primary">{cityList1}</h4>
     <Col>
@@ -288,7 +288,7 @@ function weatherSelector(props) {
 
  
   
-  <Col className = "border border-dark">
+  <Col className = "border border-dark rounded px-4 mb-2">
     <h1 className="text-danger">{temp2 ? `${temp2}ºF` : "Find the temperature of the second city!"}</h1>
     <h4 className="text-danger">{cityList2}</h4>
     <Col>
