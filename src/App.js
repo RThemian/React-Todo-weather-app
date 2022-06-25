@@ -257,7 +257,7 @@ function weatherSelector(props) {
 <Form onSubmit={searchLocation2}>
   <Form.Group className="mb-3 w-75" controlId="inputLocationWeather2">
     <Form.Label>Check the weather</Form.Label>
-    <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather" onKeyPress = {searchLocation2} />
+    <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather"  />
     <Form.Text className="text-muted">
       Enter where you would like to visit
     </Form.Text>
