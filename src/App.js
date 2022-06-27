@@ -1,49 +1,35 @@
-import React, {useEffect, useState} from "react";
-import {Form, Button, Card, Col, Row} from 'react-bootstrap';
+import React, {useState} from "react";
+import {Form, Button, Col, Row} from 'react-bootstrap';
 import "./App.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import thunderWeather from './assets/thunderWeather.jpg';
-import useFetch from "./components/useFetch.js";
 
 
 export default function App() {
 
-  const [value, setValue] = useState('');
-  const [data, setData] = useState('');
   const [temp, setTemp] = useState('');
   const [location, setLocation] = useState("seattle")
   const [city1, setCity1] = useState(["city 1", "state 1", "country 1"]);
   const [city2, setCity2] = useState(["city 2", "state 2", "country 2"]);
 
    
-  const {get, loading} = useFetch("https://newsapi.org/v2/");
-  const newsAPI = "215039076dcd421ab4032504527bdae1";
 
-  //https://newsapi.org/v2/everything?q=chicago&apiKey=215039076dcd421ab4032504527bdae1
 
-    useEffect(() => {
-        get(`everything?q=${location}&apiKey=${newsAPI}`).then(data => {
-            console.log("🌿🍵💚🌱", data);
-        })
-        .catch(error => console.error(error));
-    }, []);
-
-   //target the input using the event.key
+   
 
   const [weather, setWeather] = useState('');
   const [weather2, setWeather2] = useState('');
 
   const searchLocation = (event) => {
       event.preventDefault();
-      console.log(location);
     
-    //check is "enter" was hit on the keyboard
+   
      
     axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location}&aqi=yes`)
     .then((response) => {
-    setData(response.data)
-    console.log( response.data)
+    
+   
     setTemp(response.data.current.temp_f)
     setWeather(response.data.current.condition.text)
   setCity1([response.data.location.name, response.data.location.region, response.data.location.country])
@@ -101,19 +87,9 @@ export default function App() {
   const cityList1 = city1.map((item) => <li>{item}</li>)
 
   const cityList2 = city2.map((item) => <li>{item}</li>);
-// global var to hold images in url only
-  // var weatherImageSources = [
-  //   {
 
-  //   }
-  // ]
-// got to fix that displayWeatherTypes is not being filled permanently after end of mapping
-   const displayWeatherTypes = weatherConditions.map((pic) => {
-     console.log("🔴",pic)
-   
-   })
 
-  console.log("🔴🔴🔴", displayWeatherTypes);
+  
 
 
   const searchLocation2 = (event) => {
@@ -121,7 +97,7 @@ export default function App() {
     console.log(location2);
   axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location2}&aqi=yes`)
   .then((response2) => {
-  setData(response2.data)
+  
    
   setTemp2(response2.data.current.temp_f)
   console.log(response2.data.current.condition.text);
@@ -130,27 +106,8 @@ export default function App() {
   })
   .catch((error2) => console.error(error2))
 }
-//const [defaultWeatherReal, setDefaultWeatherReal] = useState('https://cdn.pixabay.com/photo/2018/06/16/16/17/road-3478977_960_720.jpg');
-
-// store images
-//<img className = "mb-4 mx-4 w-25 h-25" src ='https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg' />
-  //<img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg" />
-  //<img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2016/07/03/12/09/sky-1494656_960_720.jpg" />
-  //<img className = "mb-4 mx-4 w-25 h-25" src = "https://cdn.pixabay.com/photo/2015/05/31/13/59/rain-791893_960_720.jpg" />
-  
-
-  const [news1, setNews1] = useState([]);
-  const [news2, setNews2] = useState([]);
-
-useEffect(() => {
 
 
-
-}, [weather, weather2])
-
-
-const [weatherImage1, setWeatherImage1] = useState("https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg");
-const [weatherImage2, setWeatherImage2] = useState("https://cdn.pixabay.com/photo/2015/07/05/10/18/tree-832079_960_720.jpg");
 
 
 
@@ -219,7 +176,7 @@ function weatherSelector(props) {
     <>
     <div className = "bg-light">
     <div className="container mt-2">
-    <h2>{loading ? "Loading..." : ""}</h2>
+   
       <h1 className="text-white text-center bg-dark w-100">Which city, better weather?</h1>
       
     <Row>
@@ -248,7 +205,7 @@ function weatherSelector(props) {
   
     <div className="text-center bg-info px-4 block-example border border-success border-1 rounded mb-0">
     <h1 className="mb-4">? </h1>
-      <img className = 'container mb-4' src = {thunderWeather}/>
+      <img className = 'container mb-4' alt = "thunderWeather" src = {thunderWeather}/>
    
     </div>
 
@@ -303,7 +260,7 @@ function weatherSelector(props) {
     
    
   </Col>
-  <Row>{displayWeatherTypes}</Row>
+ 
   
   
 </Row>
