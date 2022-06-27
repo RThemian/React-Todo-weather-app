@@ -35,7 +35,7 @@ export default function App() {
   const [weather2, setWeather2] = useState('');
 
   const searchLocation = (event) => {
-      
+      event.preventDefault();
       console.log(location);
     
     //check is "enter" was hit on the keyboard
@@ -58,6 +58,10 @@ export default function App() {
        photo: "https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg",
        text: "sunny"
      },
+     { 
+      photo: "https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_960_720.jpg",
+      text: "clear"
+    },
          {
            photo: "https://cdn.pixabay.com/photo/2016/06/22/16/22/clouds-1473311_960_720.jpg",
            text: "cloudy"
@@ -113,7 +117,7 @@ export default function App() {
 
 
   const searchLocation2 = (event) => {
-    
+    event.preventDefault();
     console.log(location2);
   axios.get(`http://api.weatherapi.com/v1/current.json?key=a389c7cedf1e4ac494e140828220806&q=${location2}&aqi=yes`)
   .then((response2) => {
@@ -226,13 +230,13 @@ function weatherSelector(props) {
       <Form onSubmit={searchLocation}>
       <Form.Group className="mb-3 w-75" controlId="inputLocationWeather">
       <Form.Label>Check the weather</Form.Label>
-      <Form.Control value = {location} onChange = {e => setLocation(e.target.value)} type="text" placeholder="Enter location to check weather" onKeyPress = {searchLocation} />
+      <Form.Control className = "input" value = {location} onChange = {e => setLocation(e.target.value)} type="text" placeholder="Enter location to check weather"  />
       <Form.Text className="text-muted">
        Enter where you would like to visit
        </Form.Text>
   </Form.Group>
 
-  <Button className ="mb-4 " variant="primary" type="submit" onClick = {searchLocation}>
+  <Button className ="mb-4 " variant="primary" type="submit" >
     Submit
   </Button>
 </Form>
@@ -257,13 +261,13 @@ function weatherSelector(props) {
 <Form onSubmit={searchLocation2}>
   <Form.Group className="mb-3 w-75" controlId="inputLocationWeather2">
     <Form.Label>Check the weather</Form.Label>
-    <Form.Control value = {location2} onChange = {e => setLocation2(e.target.value)} type="text" placeholder="Enter second location to check weather"  />
+    <Form.Control type = 'text' className = "input" value = {location2} onChange = {event => setLocation2(event.target.value)} placeholder="Enter second location to check weather"  />
     <Form.Text className="text-muted">
       Enter where you would like to visit
     </Form.Text>
   </Form.Group>
 
-  <Button className = "mb-4" variant="primary" type="submit" onClick = {searchLocation2}>
+  <Button className = "mb-4" variant="primary" type="submit" >
     Submit
   </Button>
 </Form>
